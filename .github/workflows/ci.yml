@@ -26,10 +26,10 @@ jobs:
       matrix:
         os:
           - ubuntu-22.04
-          - macos-12
+          - macos-13
           - windows-2022
         compiler:
-          # you can specify the version after `-` like "llvm-15.0.5".
+          # you can specify the version after `-` like "llvm-15.0.2".
           - llvm-15.0.2
           - gcc
         generator:
@@ -54,7 +54,7 @@ jobs:
           - compiler: gcc
             gcov_executable: gcov
             enable_ipo: On
-          - compiler: llvm
+          - compiler: llvm-15.0.2
             enable_ipo: Off
             gcov_executable: "llvm-cov gcov"
           - os: macos-13
