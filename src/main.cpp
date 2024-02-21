@@ -26,7 +26,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
     window.setFramerateLimit(kFramerateLimit);
     std::ignore = ImGui::SFML::Init(window);
 
-    constexpr auto scale_factor{2.0};
+    constexpr float scale_factor{2.F};
     ImGui::GetStyle().ScaleAllSizes(scale_factor);
     ImGui::GetIO().FontGlobalScale = scale_factor;
 
