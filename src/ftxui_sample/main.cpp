@@ -373,6 +373,7 @@ void game_iteration_canvas()
                 break;
             default:
                 // should be unreachable
+                break;
             }
 
 
