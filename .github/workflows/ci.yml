@@ -9,7 +9,7 @@ on:
       - main
       - develop
 env:
-  CLANG_TIDY_VERSION: "16"
+  CLANG_TIDY_VERSION: "15"
   VERBOSE: 1
 jobs:
   Test:
@@ -30,7 +30,7 @@ jobs:
           - windows-2019
         compiler:
           # you can specify the version after `-` like "llvm-15.0.2".
-          - llvm-16
+          - llvm-15
           - gcc-13
         generator:
           - "Ninja Multi-Config"
@@ -52,7 +52,7 @@ jobs:
           - compiler: gcc-13
             gcov_executable: gcov
             enable_ipo: On
-          - compiler: llvm-16
+          - compiler: llvm-15
             enable_ipo: Off
             gcov_executable: "llvm-cov gcov"
           - os: macos-12
