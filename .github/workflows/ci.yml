@@ -29,8 +29,8 @@ jobs:
           - macos-12
           - windows-2019
         compiler:
-          # you can specify the version after `-` like "llvm-15.0.2".
-          - llvm-15
+          # you can specify the version after `-` like "llvm-15.0.7".
+          - llvm-15.0.7
           - gcc-12
         generator:
           - "Ninja Multi-Config"
@@ -54,7 +54,7 @@ jobs:
           - compiler: gcc-12
             gcov_executable: gcov
             enable_ipo: On
-          - compiler: llvm-15
+          - compiler: llvm-15.0.7
             enable_ipo: Off
             gcov_executable: "llvm-cov gcov"
           - os: macos-12
