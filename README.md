@@ -1,5 +1,7 @@
 # cpp-weekly-game-project
 
+Based on video series [An RPG in C++20](https://github.com/lefticus/cpp_weekly_game_project).
+
 [![ci](https://github.com/rodneylab/cpp-weekly-game-project/actions/workflows/ci.yml/badge.svg)](https://github.com/rodneylab/cpp-weekly-game-project/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/rodneylab/cpp-weekly-game-project/branch/main/graph/badge.svg)](https://codecov.io/gh/rodneylab/cpp-weekly-game-project)
 [![CodeQL](https://github.com/rodneylab/cpp-weekly-game-project/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/rodneylab/cpp-weekly-game-project/actions/workflows/codeql-analysis.yml)

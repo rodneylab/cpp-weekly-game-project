@@ -9,15 +9,15 @@ function(cpp_weekly_game_project_setup_dependencies)
   # already been provided to us by a parent project
 
   if(NOT TARGET fmtlib::fmtlib)
-    cpmaddpackage("gh:fmtlib/fmt#9.1.0")
+    cpmaddpackage("gh:fmtlib/fmt#e69e5f977d458f2650bb346dadf2ad30c5320281") # 10.x
   endif()
 
   if(NOT TARGET spdlog::spdlog)
     cpmaddpackage(
       NAME
       spdlog
-      VERSION
-      1.11.0
+      GIT_TAG
+      7c02e204c92545f869e2f04edaab1f19fe8b19fd # v1.13.0
       GITHUB_REPOSITORY
       "gabime/spdlog"
       OPTIONS
@@ -25,7 +25,7 @@ function(cpp_weekly_game_project_setup_dependencies)
   endif()
 
   if(NOT TARGET Catch2::Catch2WithMain)
-    cpmaddpackage("gh:catchorg/Catch2@3.3.2")
+    cpmaddpackage("gh:catchorg/Catch2#05e10dfccc28c7f973727c54f850237d07d5e10f") # v3.5.2
   endif()
 
   if(NOT TARGET CLI11::CLI11)
@@ -40,4 +40,27 @@ function(cpp_weekly_game_project_setup_dependencies)
     cpmaddpackage("gh:lefticus/tools#update_build_system")
   endif()
 
+  cpmaddpackage("gh:SFML/SFML#5a74cf33e92008920bfd04698dbd6a7733e1c269") # 2.6.x
+
+  FetchContent_Declare(
+    ImGui
+    GIT_REPOSITORY https://github.com/ocornut/imgui
+    GIT_TAG 5b6f03213dde8c6ca9bea4707321cca79f2265ec) # v1.90.3
+  FetchContent_MakeAvailable(ImGui)
+  FetchContent_GetProperties(ImGui SOURCE_DIR IMGUI_DIR)
+
+  add_library(
+    imgui STATIC
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    #${imgui_SOURCE_DIR}/imgui_demo.cpp # optionally comment this out
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp)
+  target_include_directories(imgui INTERFACE ${imgui_SOURCE_DIR})
+  #target_compile_definitions(imgui PUBLIC -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS) # optional imgui setting
+  #set_target_properties(imgui PROPERTIES FOLDER third-party) # optional IDE dir
+
+  set(IMGUI_SFML_FIND_SFML OFF)
+  set(IMGUI_DIR ${imgui_SOURCE_DIR})
+  cpmaddpackage("gh:SFML/imgui-sfml#bf9023d1bc6ec422769559a5eff60bd00597354f") # 2.6.x
 endfunction()

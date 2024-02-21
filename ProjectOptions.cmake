@@ -3,7 +3,6 @@ include(cmake/LibFuzzer.cmake)
 include(CMakeDependentOption)
 include(CheckCXXCompilerFlag)
 
-
 macro(cpp_weekly_game_project_supports_sanitizers)
   if((CMAKE_CXX_COMPILER_ID MATCHES ".*Clang.*" OR CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*") AND NOT WIN32)
     set(SUPPORTS_UBSAN ON)
@@ -55,7 +54,8 @@ macro(cpp_weekly_game_project_setup_options)
     option(cpp_weekly_game_project_ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" OFF)
     option(cpp_weekly_game_project_ENABLE_UNITY_BUILD "Enable unity builds" OFF)
     option(cpp_weekly_game_project_ENABLE_CLANG_TIDY "Enable clang-tidy" ON)
-    option(cpp_weekly_game_project_ENABLE_CPPCHECK "Enable cpp-check analysis" ON)
+    #option(cpp_weekly_game_project_ENABLE_CPPCHECK "Enable cpp-check analysis" ON)
+    option(cpp_weekly_game_project_ENABLE_CPPCHECK "Enable cpp-check analysis" OFF)
     option(cpp_weekly_game_project_ENABLE_PCH "Enable precompiled headers" OFF)
     option(cpp_weekly_game_project_ENABLE_CACHE "Enable ccache" ON)
   endif()
@@ -79,7 +79,10 @@ macro(cpp_weekly_game_project_setup_options)
   endif()
 
   cpp_weekly_game_project_check_libfuzzer_support(LIBFUZZER_SUPPORTED)
-  if(LIBFUZZER_SUPPORTED AND (cpp_weekly_game_project_ENABLE_SANITIZER_ADDRESS OR cpp_weekly_game_project_ENABLE_SANITIZER_THREAD OR cpp_weekly_game_project_ENABLE_SANITIZER_UNDEFINED))
+  if(LIBFUZZER_SUPPORTED
+     AND (cpp_weekly_game_project_ENABLE_SANITIZER_ADDRESS
+          OR cpp_weekly_game_project_ENABLE_SANITIZER_THREAD
+          OR cpp_weekly_game_project_ENABLE_SANITIZER_UNDEFINED))
     set(DEFAULT_FUZZER ON)
   else()
     set(DEFAULT_FUZZER OFF)
@@ -99,7 +102,7 @@ macro(cpp_weekly_game_project_global_options)
 
   if(cpp_weekly_game_project_ENABLE_HARDENING AND cpp_weekly_game_project_ENABLE_GLOBAL_HARDENING)
     include(cmake/Hardening.cmake)
-    if(NOT SUPPORTS_UBSAN 
+    if(NOT SUPPORTS_UBSAN
        OR cpp_weekly_game_project_ENABLE_SANITIZER_UNDEFINED
        OR cpp_weekly_game_project_ENABLE_SANITIZER_ADDRESS
        OR cpp_weekly_game_project_ENABLE_SANITIZER_THREAD
@@ -108,7 +111,9 @@ macro(cpp_weekly_game_project_global_options)
     else()
       set(ENABLE_UBSAN_MINIMAL_RUNTIME TRUE)
     endif()
-    message("${cpp_weekly_game_project_ENABLE_HARDENING} ${ENABLE_UBSAN_MINIMAL_RUNTIME} ${cpp_weekly_game_project_ENABLE_SANITIZER_UNDEFINED}")
+    message(
+      "${cpp_weekly_game_project_ENABLE_HARDENING} ${ENABLE_UBSAN_MINIMAL_RUNTIME} ${cpp_weekly_game_project_ENABLE_SANITIZER_UNDEFINED}"
+    )
     cpp_weekly_game_project_enable_hardening(cpp_weekly_game_project_options ON ${ENABLE_UBSAN_MINIMAL_RUNTIME})
   endif()
 endmacro()
@@ -144,7 +149,8 @@ macro(cpp_weekly_game_project_local_options)
     ${cpp_weekly_game_project_ENABLE_SANITIZER_THREAD}
     ${cpp_weekly_game_project_ENABLE_SANITIZER_MEMORY})
 
-  set_target_properties(cpp_weekly_game_project_options PROPERTIES UNITY_BUILD ${cpp_weekly_game_project_ENABLE_UNITY_BUILD})
+  set_target_properties(cpp_weekly_game_project_options PROPERTIES UNITY_BUILD
+                                                                   ${cpp_weekly_game_project_ENABLE_UNITY_BUILD})
 
   if(cpp_weekly_game_project_ENABLE_PCH)
     target_precompile_headers(
@@ -162,11 +168,13 @@ macro(cpp_weekly_game_project_local_options)
 
   include(cmake/StaticAnalyzers.cmake)
   if(cpp_weekly_game_project_ENABLE_CLANG_TIDY)
-    cpp_weekly_game_project_enable_clang_tidy(cpp_weekly_game_project_options ${cpp_weekly_game_project_WARNINGS_AS_ERRORS})
+    cpp_weekly_game_project_enable_clang_tidy(cpp_weekly_game_project_options
+                                              ${cpp_weekly_game_project_WARNINGS_AS_ERRORS})
   endif()
 
   if(cpp_weekly_game_project_ENABLE_CPPCHECK)
-    cpp_weekly_game_project_enable_cppcheck(${cpp_weekly_game_project_WARNINGS_AS_ERRORS} "" # override cppcheck options
+    cpp_weekly_game_project_enable_cppcheck(
+      ${cpp_weekly_game_project_WARNINGS_AS_ERRORS} "" # override cppcheck options
     )
   endif()
 
@@ -185,7 +193,7 @@ macro(cpp_weekly_game_project_local_options)
 
   if(cpp_weekly_game_project_ENABLE_HARDENING AND NOT cpp_weekly_game_project_ENABLE_GLOBAL_HARDENING)
     include(cmake/Hardening.cmake)
-    if(NOT SUPPORTS_UBSAN 
+    if(NOT SUPPORTS_UBSAN
        OR cpp_weekly_game_project_ENABLE_SANITIZER_UNDEFINED
        OR cpp_weekly_game_project_ENABLE_SANITIZER_ADDRESS
        OR cpp_weekly_game_project_ENABLE_SANITIZER_THREAD
