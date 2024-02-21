@@ -9,7 +9,7 @@ on:
       - main
       - develop
 env:
-  CLANG_TIDY_VERSION: "15"
+  CLANG_TIDY_VERSION: "15.0.2"
   VERBOSE: 1
 jobs:
   Test:
@@ -30,7 +30,7 @@ jobs:
           - windows-2022
         compiler:
           # you can specify the version after `-` like "llvm-15.0.5".
-          - llvm
+          - llvm-15.0.2
           - gcc
         generator:
           - "Ninja Multi-Config"
