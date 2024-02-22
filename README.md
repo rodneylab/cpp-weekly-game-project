@@ -8,11 +8,9 @@ Based on video series [An RPG in C++20](https://github.com/lefticus/cpp_weekly_g
 
 ## About cpp-weekly-game-project
 
-
-
 ## More Details
 
- * [Dependency Setup](README_dependencies.md)
- * [Building Details](README_building.md)
- * [Troubleshooting](README_troubleshooting.md)
- * [Docker](README_docker.md)
+- [Dependency Setup](README_dependencies.md)
+- [Building Details](README_building.md)
+- [Troubleshooting](README_troubleshooting.md)
+- [Docker](README_docker.md)

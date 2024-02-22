@@ -2,7 +2,7 @@ fail_fast: false
 repos:
   - hooks:
       - id: check-yaml
-      - exclude: .vscode
+      - exclude: .vscode,.devcontainer/devcontainer.json
         id: check-json
       - id: end-of-file-fixer
       - id: trailing-whitespace
@@ -22,11 +22,11 @@ repos:
           - push
     repo: https://github.com/commitizen-tools/commitizen
     rev: v3.13.0
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.18.1
-    hooks:
+  - hooks:
       - id: gitleaks
-  - repo: https://github.com/google/yamlfmt
-    rev: v0.10.0
-    hooks:
+    repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.1
+  - hooks:
       - id: yamlfmt
+    repo: https://github.com/google/yamlfmt
+    rev: v0.10.0
