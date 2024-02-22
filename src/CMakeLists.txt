@@ -9,8 +9,8 @@ option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 target_link_libraries(
   game
-  PRIVATE fmt::fmt
+  PRIVATE CLI11
+          fmt::fmt
           spdlog::spdlog
           sfml-graphics
           ImGui-SFML::ImGui-SFML)
-      #target_compile_features(game PRIVATE cxx_std_17)
