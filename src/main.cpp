@@ -80,8 +80,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
         int index{0};
         for (const auto &step : steps)
         {
-            ImGui::Checkbox(fmt::format("{} : {}", index, step).c_str(),
-                            std::next(begin(states), index));
+            ImGui::Checkbox(
+                fmt::format("{} : {}", index, step).c_str(),
+                static_cast<bool *>(std::next(begin(states), index)));
             ++index;
         }
 
