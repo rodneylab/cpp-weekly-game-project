@@ -9,20 +9,21 @@
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 
+#include <array>
+#include <cstddef>
+#include <cstdlib>
+#include <exception>
+//#include <iterator>
+#include <string>
 #include <tuple>
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
 {
-
-    spdlog::info("Hello, {}!", "World");
-
-    fmt::print("Hello, from {}\n", "{fmt}");
-
     constexpr unsigned int kScreenWidth{1024};
     constexpr unsigned int kScreenHeight{768};
     constexpr unsigned int kFramerateLimit{60};
-    sf::RenderWindow window(sf::VideoMode(kScreenWidth, kScreenHeight),
-                            "ImGui + SFML");
+    sf::RenderWindow window{sf::VideoMode(kScreenWidth, kScreenHeight),
+                            "ImGui + SFML"};
     window.setFramerateLimit(kFramerateLimit);
     std::ignore = ImGui::SFML::Init(window);
 
@@ -30,17 +31,29 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
     ImGui::GetStyle().ScaleAllSizes(scale_factor);
     ImGui::GetIO().FontGlobalScale = scale_factor;
 
-    bool state{false};
-    bool state1{false};
-    bool state2{false};
-    bool state3{false};
-    bool state4{false};
-    bool state5{false};
-    bool state6{false};
-    bool state7{false};
-    bool state8{false};
-    bool state9{false};
-    bool state10{false};
+    constexpr std::size_t kNumSteps{12};
+    std::array<bool, kNumSteps> states{};
+    std::array<std::string, kNumSteps> steps{};
+    try
+    {
+        steps = {"Getting Started",
+                 "Finding Errors as soon as Possible",
+                 "Handling Command Line Parameters",
+                 "C++ 20 so far",
+                 "Reading SFML Input States",
+                 "Managing Game State",
+                 "Making our Game Testable",
+                 "Making Game State Allocator Aware",
+                 "Add Logging to the Game Engine",
+                 "Draw a Game Map",
+                 "Dialog Trees",
+                 "Porting from SFML to SDL"};
+    }
+    catch (const std::exception &e)
+    {
+        spdlog::error("Error assigning step names: {}", e.what());
+        return EXIT_FAILURE;
+    }
 
     sf::Clock delta_clock;
     while (true)
@@ -62,18 +75,15 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
 
         ImGui::SFML::Update(window, delta_clock.restart());
 
-        ImGui::Begin("The Plan", &state);
-        ImGui::Checkbox("0 : The Plan", &state1);
-        ImGui::Checkbox("1 : Getting Started", &state2);
-        ImGui::Checkbox("2 : C++ 20 so Far", &state3);
-        ImGui::Checkbox("3 : Reading SFML Input States", &state4);
-        ImGui::Checkbox("4 : Managing Game State", &state5);
-        ImGui::Checkbox("5 : Making Our Game Testable", &state6);
-        ImGui::Checkbox("6 : Making Game State Allocator Aware", &state6);
-        ImGui::Checkbox("7 : Add Logging to the Game Engine", &state7);
-        ImGui::Checkbox("8 : Draw a Game Map", &state8);
-        ImGui::Checkbox("9 : log Trees", &state9);
-        ImGui::Checkbox("10 : Porting from SFML to SDL", &state10);
+        ImGui::Begin("The Plan");
+
+        for (size_t index = 0; auto &state : states)
+        {
+            ImGui::Checkbox(
+                fmt::format("{} : {}", index, steps.at(index)).c_str(),
+                &state);
+            ++index;
+        }
 
         ImGui::End();
 
@@ -84,5 +94,5 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
 
     ImGui::SFML::Shutdown();
 
-    return 0;
+    return EXIT_SUCCESS;
 }
