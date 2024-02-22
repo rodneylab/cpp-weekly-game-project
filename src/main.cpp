@@ -13,7 +13,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <exception>
-#include <iterator>
+//#include <iterator>
 #include <string>
 #include <tuple>
 
@@ -77,12 +77,11 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char **argv)
 
         ImGui::Begin("The Plan");
 
-        int index{0};
-        for (const auto &step : steps)
+        for (size_t index = 0; auto &state : states)
         {
             ImGui::Checkbox(
-                fmt::format("{} : {}", index, step).c_str(),
-                static_cast<bool *>(std::next(begin(states), index)));
+                fmt::format("{} : {}", index, steps.at(index)).c_str(),
+                &state);
             ++index;
         }
 
