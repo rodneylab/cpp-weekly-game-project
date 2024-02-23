@@ -29,11 +29,11 @@ function(cpp_weekly_game_project_setup_dependencies)
   endif()
 
   if(NOT TARGET CLI11::CLI11)
-    cpmaddpackage("gh:CLIUtils/CLI11@2.3.2")
+    cpmaddpackage("gh:CLIUtils/CLI11#f4d0731cebb123ff0ace712c099dffbcd2c58e5a") # v2.4.1
   endif()
 
   if(NOT TARGET ftxui::screen)
-    cpmaddpackage("gh:ArthurSonzogni/FTXUI#e23dbc7473654024852ede60e2121276c5aab660")
+      cpmaddpackage("gh:ArthurSonzogni/FTXUI#cdf28903a7781f97ba94d30b79c3a4b0c97ccce7") # v5.0.0
   endif()
 
   if(NOT TARGET tools::tools)
