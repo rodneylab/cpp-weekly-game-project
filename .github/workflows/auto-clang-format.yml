@@ -6,15 +6,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: DoozyX/clang-format-lint-action@v0.17
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+      - uses: DoozyX/clang-format-lint-action@11b773b1598aa4ae3b32f023701bca5201c3817d # v0.17
         with:
           source: '.'
           exclude: './third_party ./external'
           extensions: 'h,cpp,hpp'
           clangFormatVersion: 12
           inplace: True
-      - uses: EndBug/add-and-commit@v9
+      - uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9.1.4
         with:
           author_name: Clang Robot
           author_email: robot@example.com

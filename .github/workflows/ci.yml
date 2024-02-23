@@ -105,16 +105,21 @@ jobs:
             enable_ipo: On
             build_shared: On
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+
       - name: Install Linux Dependencies
         if: ${{ contains(matrix.os, 'ubuntu' )}}
         run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev freeglut3-dev libxinerama-dev libxi-dev
       - name: Check for llvm version mismatches
         if: ${{ contains(matrix.compiler, 'llvm') && !contains(matrix.compiler, env.CLANG_TIDY_VERSION) }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
             core.setFailed('There is a mismatch between configured llvm compiler and clang-tidy version chosen')
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
       - name: Setup Cache
         uses: ./.github/actions/setup_cache
         with:
@@ -123,11 +128,11 @@ jobs:
           packaging_maintainer_mode: ${{ matrix.packaging_maintainer_mode }}
           generator: ${{ matrix.generator }}
       - name: Project Name
-        uses: cardinalby/export-env-action@v2
+        uses: cardinalby/export-env-action@b16a08b396d047e3f9e1446e3946440e2be02a73 # v2
         with:
           envFile: '.github/constants.env'
       - name: Setup Cpp
-        uses: aminya/setup-cpp@v1
+        uses: aminya/setup-cpp@290824452986e378826155f3379d31bce8753d76 # v1
         with:
           compiler: ${{ matrix.compiler }}
           vcvarsall: ${{ contains(matrix.os, 'windows' )}}
@@ -165,13 +170,13 @@ jobs:
         run: |
           cpack -C ${{matrix.build_type}} -G ${{matrix.package_generator}}
       - name: Publish Tagged Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
         if: ${{ startsWith(github.ref, 'refs/tags/') && matrix.package_generator != '' }}
         with:
           files: |
             build/*-*${{ matrix.build_type }}*-*.*
       - name: Publish to codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@e0b68c6749509c5f83f984dd99a76a1c1a231044 # v4.0.1
         with:
           flags: ${{ runner.os }}
           name: ${{ runner.os }}-coverage
