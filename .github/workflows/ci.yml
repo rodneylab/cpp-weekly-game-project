@@ -123,7 +123,7 @@ jobs:
           packaging_maintainer_mode: ${{ matrix.packaging_maintainer_mode }}
           generator: ${{ matrix.generator }}
       - name: Project Name
-        uses: cardinalby/export-env-action@66657b34899a2d695434ed060d9f2215db9b4035 # 2.2.0
+        uses: cardinalby/export-env-action@b16a08b396d047e3f9e1446e3946440e2be02a73 # 2.2.2
         with:
           envFile: '.github/constants.env'
       - name: Setup Cpp
