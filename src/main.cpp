@@ -1,3 +1,5 @@
+#include "config.hpp"
+
 #include <CLI/App.hpp>
 #include <CLI/CLI.hpp> // NOLINT misc-include-cleaner // needed for linking
 #include <CLI/Error.hpp>
@@ -6,11 +8,13 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Window/Joystick.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <fmt/core.h>
 #include <imgui-SFML.h>
 #include <imgui.h>
+#include <spdlog/common.h>
 #include <spdlog/spdlog.h>
 
 #include <array>
@@ -22,6 +26,8 @@
 
 int main(int argc, char **argv)
 {
+    spdlog::set_level(spdlog::level::debug);
+
     constexpr unsigned int kDefaultScreenWidth{1'024};
     constexpr unsigned int kMinScreenWidth{640};
     constexpr unsigned int kMaxScreenWidth{1'920};
@@ -41,13 +47,21 @@ int main(int argc, char **argv)
         try
         {
             argv = app.ensure_utf8(argv);
-            app.set_version_flag("--version", std::string("0.0.1"));
+            app.set_help_flag("--help",
+                              std::string{"Print this help message and exit"});
+            app.set_version_flag(
+                "--version",
+                fmt::format(
+                    "{}.{}.{}",
+                    cpp_weekly_game_project::cmake::project_version_major,
+                    cpp_weekly_game_project::cmake::project_version_minor,
+                    cpp_weekly_game_project::cmake::project_version_patch));
             app.add_option("-w,--width",
                            screen_width,
                            fmt::format("Screen width (default is {})",
                                        kDefaultScreenWidth))
                 ->check(CLI::Bound(kMinScreenWidth, kMaxScreenWidth));
-            app.add_option("--height",
+            app.add_option("-h,--height",
                            screen_height,
                            fmt::format("Screen height (default is {})",
                                        kDefaultScreenHeight))
@@ -83,14 +97,12 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    //constexpr unsigned int kScreenHeight{768};
     constexpr unsigned int kFramerateLimit{60};
     sf::RenderWindow window{sf::VideoMode(screen_width, screen_height),
                             "ImGui + SFML"};
     window.setFramerateLimit(kFramerateLimit);
     std::ignore = ImGui::SFML::Init(window);
 
-    //constexpr float scale_factor{2.F};
     ImGui::GetStyle().ScaleAllSizes(scale_factor);
     ImGui::GetIO().FontGlobalScale = scale_factor;
 
@@ -109,7 +121,7 @@ int main(int argc, char **argv)
     std::array<bool, steps.size()> states{};
 
     sf::Clock delta_clock;
-    while (true)
+    while (window.isOpen())
     {
         for (auto event = sf::Event{}; window.pollEvent(event);)
         {
@@ -118,6 +130,19 @@ int main(int argc, char **argv)
             if (event.type == sf::Event::Closed)
             {
                 window.close();
+            }
+            else if (event.type == sf::Event::JoystickConnected ||
+                     event.type == sf::Event::JoystickDisconnected)
+            {
+                if (sf::Joystick::isConnected(0))
+                {
+                    spdlog::debug(
+                        "Joystick {} {} {} with {} buttons connected",
+                        sf::Joystick::getIdentification(0).name.toAnsiString(),
+                        sf::Joystick::getIdentification(0).vendorId,
+                        sf::Joystick::getIdentification(0).productId,
+                        sf::Joystick::getButtonCount(0));
+                }
             }
         }
 
