@@ -44,7 +44,7 @@ jobs:
         packaging_maintainer_mode:
           - ON
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Setup Cache
         uses: ./.github/actions/setup_cache
         with:
@@ -53,13 +53,13 @@ jobs:
           packaging_maintainer_mode: ${{ matrix.packaging_maintainer_mode }}
           generator: ${{ matrix.generator }}
       - name: Project Name
-        uses: cardinalby/export-env-action@v2
+        uses: cardinalby/export-env-action@66657b34899a2d695434ed060d9f2215db9b4035 # 2.2.0
         with:
           envFile: '.github/constants.env'
       - name: install
         run: sudo apt-get update && sudo apt-get install gcovr lcov libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev freeglut3-dev libxinerama-dev libxi-dev
       - name: Setup Cpp
-        uses: aminya/setup-cpp@v1
+        uses: aminya/setup-cpp@290824452986e378826155f3379d31bce8753d76 # v0.37.0
         with:
           compiler: ${{ matrix.compiler }}
           vcvarsall: ${{ contains(matrix.os, 'windows' )}}
@@ -78,7 +78,7 @@ jobs:
           cmake -S . -B ./build -G "${{matrix.generator}}" -DCMAKE_BUILD_TYPE:STRING=${{matrix.build_type}} -D${{ env.PROJECT_NAME }}_PACKAGING_MAINTAINER_MODE:BOOL=${{matrix.packaging_maintainer_mode}} -D${{ env.PROJECT_NAME }}_ENABLE_COVERAGE:BOOL=${{ matrix.build_type == 'Debug' }}
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@379614612a29c9e28f31f39a59013eb8012a51f0 # v3.24.3
         with:
           languages: ${{ matrix.language }}
           # If you wish to specify custom queries, you can do so here or in a config file.
@@ -90,4 +90,4 @@ jobs:
         run: |
           cmake --build ./build --config ${{matrix.build_type}}
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@379614612a29c9e28f31f39a59013eb8012a51f0 # v3.24.3
