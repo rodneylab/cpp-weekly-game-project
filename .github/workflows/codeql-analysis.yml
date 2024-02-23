@@ -18,6 +18,8 @@ on:
     branches: [main, develop]
   schedule:
     - cron: '38 0 * * 5'
+permissions:
+  contents: read
 jobs:
   analyze:
     name: Analyze
