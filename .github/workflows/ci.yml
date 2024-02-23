@@ -68,7 +68,7 @@ jobs:
             compiler: gcc
             generator: "Unix Makefiles"
             build_type: Debug
-            gcov_executable: gcov
+            gcov_executable: gcov-13
             packaging_maintainer_mode: On
             enable_ipo: Off
           # Windows msvc builds
