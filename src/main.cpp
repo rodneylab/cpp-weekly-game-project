@@ -62,19 +62,19 @@ int main(int argc, char **argv)
             spdlog::info("Displaying help: {}", exception.what());
             return app.exit(exception);
         }
-        catch (CLI::Success &exeption)
+        catch (CLI::Success & /* exception */)
         {
             spdlog::info("Parsed CLI parameters successfully");
         }
         catch (CLI::ParseError &exception)
         {
             spdlog::error("Error parsing CLI parameters: {}", exception.what());
-            return EXIT_FAILURE;
+            return app.exit(exception);
         }
         catch (CLI::Error &exception)
         {
             spdlog::error("CLI Error: {}", exception.what());
-            return EXIT_FAILURE;
+            return app.exit(exception);
         }
     }
     catch (...)
