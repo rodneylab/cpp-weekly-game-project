@@ -105,6 +105,10 @@ jobs:
             enable_ipo: On
             build_shared: On
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
       - name: Install Linux Dependencies
         if: ${{ contains(matrix.os, 'ubuntu' )}}
         run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev freeglut3-dev libxinerama-dev libxi-dev
