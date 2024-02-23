@@ -1,6 +1,6 @@
 # [Choice] bionic (18.04), focal (20.04)
 ARG VARIANT="focal"
-FROM ubuntu:${VARIANT}
+FROM ubuntu:${VARIANT}@sha256:a4fab1802f08df089c4b2e0a1c8f1a06f573bd1775687d07fef4076d3a2e4900
 
 # Restate the variant to use it later on in the llvm and cmake installations
 ARG VARIANT
@@ -14,9 +14,10 @@ RUN apt-get update -qq && export DEBIAN_FRONTEND=noninteractive && \
         python3 python3-pip
 
 # Install conan
-RUN python3 -m pip install --upgrade pip setuptools && \
-    python3 -m pip install conan && \
-    conan --version
+#RUN python3 -m pip install --upgrade pip setuptools && \
+#    python3 -m pip install conan && \
+#    conan --version
+RUN python3 -m pip install -r requirements.txt --require-hashes
 
 # By default, anything you run in Docker is done as superuser.
 # Conan runs some install commands as superuser, and will prepend `sudo` to
